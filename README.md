@@ -1,108 +1,68 @@
-# Image Transformer
+# Matrix Image Transformations
 
-A Python library for image transformation using matrix operations and linear algebra. This project implements various image transformations from scratch using NumPy, without relying on prebuilt image processing functions.
+A simple Python project that demonstrates basic matrix operations on images. The project converts images to matrices, applies matrix transformations, and converts them back to images.
 
-## Features
+## Matrix Operations
 
-- **Basic Matrix Operations**: Converts images to matrices and applies transformations directly to the pixel values
-- **No Dependencies on Image Processing Libraries**: All transformations are implemented using matrix operations
-- **Supported Transformations**:
-  - Resize (nearest neighbor interpolation)
-  - Rotate (using rotation matrices)
-  - Flip (horizontal and vertical)
-  - Grayscale conversion (weighted RGB method)
-  - Brightness/contrast adjustment
-  - Blur (box blur using manual convolution)
-  - Edge detection (Sobel operator)
-  - Thresholding
-  - Crop
-  - Sepia tone effect
-
-## Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/image-transformer.git
-cd image-transformer
-
-# Install dependencies
-pip install numpy pillow
+1. **Matrix Addition**
+```python
+# Example:
+(1, 2)   +   (5, 6)   =   (1+5, 2+6)
+(3, 4)       (7, 8)       (3+7, 4+8)
+# Result: (6, 8, 10, 12)
 ```
+
+2. **Matrix Subtraction**
+```python
+A - B = Matrix of (A[i][j] - B[i][j])
+```
+
+3. **Matrix Multiplication**
+```python
+# Multiplies corresponding elements
+result[i][j] = sum(matrix1[i][k] * matrix2[k][j])
+```
+
+4. **Matrix Transpose**
+```python
+# Flips matrix over its diagonal
+(1, 2)  ->  (1, 3)
+(3, 4)      (2, 4)
+```
+
+5. **Scalar Multiplication**
+```python
+# Multiplies each element by a number
+matrix * 2 = Matrix of (element * 2)
+```
+
+## Image Transformations
+
+The project includes four basic image transformations:
+1. **Brighten**: Adds 50 to each pixel value using matrix addition
+2. **Darken**: Multiplies each pixel value by 0.7 using scalar multiplication
+3. **Flip**: Transposes the image matrix
+4. **Negative**: Subtracts pixel values from 255 to invert the image
 
 ## Usage
 
-```python
-from Transformer import ImageTransformer
-
-# Initialize with an image path
-transformer = ImageTransformer("path_to_your_image.jpg")
-
-# Load the image
-transformer.load_image()
-
-# Apply transformations (methods can be chained)
-transformer.resize(400, 300) \
-          .to_grayscale() \
-          .adjust_contrast(1.5) \
-          .blur_box(3)
-
-# Save the result
-transformer.save_image("transformed_image.jpg")
+1. Install the required package:
+```bash
+pip install pillow
 ```
 
-## Example Transformations
+2. Place your input image as "input.jpg" in the project folder
 
-### Resize
-```python
-# Resize to 50% of original dimensions
-width, height = image.size
-transformer.resize(width // 2, height // 2)
+3. Run the program:
+```bash
+python main.py
 ```
 
-### Rotate
-```python
-# Rotate image by 45 degrees
-transformer.rotate(45)
-```
+4. Check the output files:
+- brighter.jpg
+- darker.jpg
+- flipped.jpg
+- negative.jpg
 
-### Grayscale and Edge Detection
-```python
-# Convert to grayscale and find edges
-transformer.to_grayscale().detect_edges_sobel()
-```
-
-## How It Works
-
-Unlike most image processing libraries, this project implements transformations using fundamental matrix operations:
-
-1. Images are loaded and converted to NumPy matrices
-2. Transformations are applied as matrix operations
-3. The resulting matrix is converted back to an image
-
-For example, the sepia filter applies a 3×3 color transformation matrix:
-
-```python
-sepia_matrix = np.array([
-    [0.393, 0.769, 0.189],
-    [0.349, 0.686, 0.168],
-    [0.272, 0.534, 0.131]
-])
-```
-
-## Requirements
-
-- Python 3.6+
-- NumPy
-- Pillow (PIL)
-
-## Educational Purpose
-
-This project is designed to demonstrate how image processing algorithms work at a fundamental level using matrix operations. It's ideal for:
-
-- Understanding image processing fundamentals
-- Learning matrix transformations
-- Studying digital image representation
-
-## License
-
-MIT 
+## Note
+This project works with grayscale images only. Color images will be automatically converted to grayscale during processing. 
