@@ -1,6 +1,7 @@
 # Matrix Image Transformations
 
-A simple Python project that demonstrates basic matrix operations on images. The project converts images to matrices, applies matrix transformations, and converts them back to images.
+A simple Python project that demonstrates basic matrix operations on images. The project converts images to matrices, applies matrix transformations, and converts them back to images. 
+Created as part of the project work for TwentePathway College
 
 ## Matrix Operations
 
