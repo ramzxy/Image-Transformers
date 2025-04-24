@@ -142,6 +142,52 @@ def skew_image(matrix, skew_factor_x=0.5, skew_factor_y=0.0):
     
     return result
 
+def scale_image(matrix, scale_x=1.5, scale_y=1.5):
+    """Scale image using a scaling matrix transformation."""
+    height = len(matrix)
+    width = len(matrix[0])
+    
+    # Create scaling matrix
+    scaling_matrix = [
+        [scale_x, 0],
+        [0, scale_y]
+    ]
+    
+    # Calculate new dimensions
+    new_width = int(width * scale_x)
+    new_height = int(height * scale_y)
+    
+    # Create result matrix
+    result = [[0 for _ in range(new_width)] for _ in range(new_height)]
+    
+    # Apply inverse mapping to find source pixels
+    for new_i in range(new_height):
+        for new_j in range(new_width):
+            # Create coordinate matrix for destination
+            dest_coord = [
+                [new_j],
+                [new_i]
+            ]
+            
+            # Inverse scaling matrix (1/scale_x, 1/scale_y)
+            inverse_scaling = [
+                [1/scale_x, 0],
+                [0, 1/scale_y]
+            ]
+            
+            # Apply inverse scaling to find source pixel
+            src_coord = matrix_multiplication(inverse_scaling, dest_coord)
+            
+            # Get original coordinates
+            src_j = int(src_coord[0][0])
+            src_i = int(src_coord[1][0])
+            
+            # Check if source pixel is within bounds
+            if 0 <= src_i < height and 0 <= src_j < width:
+                result[new_i][new_j] = matrix[src_i][src_j]
+    
+    return result
+
 def main():
     # Load image as matrix
     input_matrix = get_image_matrix("input.jpg")
@@ -154,6 +200,8 @@ def main():
     save_image_matrix(rotate_image(input_matrix), "rotated90.jpg")
     save_image_matrix(skew_image(input_matrix, 0.5, 0.0), "skewed_horizontal.jpg")
     save_image_matrix(skew_image(input_matrix, 0.0, 0.5), "skewed_vertical.jpg")
+    save_image_matrix(scale_image(input_matrix, 1.5, 1.5), "scaled.jpg")
+    save_image_matrix(scale_image(input_matrix, 0.5, 0.5), "scaled_down.jpg")
 
 if __name__ == "__main__":
     main()
