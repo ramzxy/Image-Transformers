@@ -93,7 +93,6 @@ def negative_image(matrix):
     return matrix_subtraction(max_matrix, matrix)
 
 def rotate_image(matrix):
-    """Rotate image by 90 degrees clockwise using matrix transpose."""
     # First transpose the matrix
     transposed = matrix_transpose(matrix)
     # Then reverse each row for 90-degree clockwise rotation
