@@ -2,7 +2,6 @@ from PIL import Image
 import math
 
 def matrix_addition(matrix1, matrix2):
-    """Add two matrices element by element."""
     result = []
     for i in range(len(matrix1)):
         row = []
@@ -12,7 +11,6 @@ def matrix_addition(matrix1, matrix2):
     return result
 
 def matrix_subtraction(matrix1, matrix2):
-    """Subtract matrix2 from matrix1 element by element."""
     result = []
     for i in range(len(matrix1)):
         row = []
@@ -22,7 +20,6 @@ def matrix_subtraction(matrix1, matrix2):
     return result
 
 def matrix_multiplication(matrix1, matrix2):
-    """Multiply two matrices using standard matrix multiplication."""
     result = []
     for i in range(len(matrix1)):
         row = []
@@ -35,7 +32,6 @@ def matrix_multiplication(matrix1, matrix2):
     return result
 
 def matrix_transpose(matrix):
-    """Transpose a matrix by swapping rows and columns."""
     result = []
     for j in range(len(matrix[0])):
         row = []
@@ -45,7 +41,6 @@ def matrix_transpose(matrix):
     return result
 
 def matrix_scalar_multiplication(matrix, scalar):
-    """Multiply each element of the matrix by a scalar value."""
     result = []
     for i in range(len(matrix)):
         row = []
@@ -55,7 +50,6 @@ def matrix_scalar_multiplication(matrix, scalar):
     return result
 
 def get_image_matrix(image_path):
-    """Convert an image to a grayscale matrix representation."""
     with Image.open(image_path) as img:
         # Convert to grayscale
         img = img.convert('L')
@@ -63,7 +57,6 @@ def get_image_matrix(image_path):
         return [[img.getpixel((j, i)) for j in range(img.width)] for i in range(img.height)]
 
 def save_image_matrix(matrix, output_path):
-    """Convert a matrix back to a grayscale image and save it."""
     height = len(matrix)
     width = len(matrix[0])
     
@@ -79,32 +72,27 @@ def save_image_matrix(matrix, output_path):
 
 # Image Transformation Functions
 def brightness_image(matrix, intensity):
-    """Adjust image brightness by adding an intensity value to each pixel."""
     height = len(matrix)
     width = len(matrix[0])
     brightness_matrix = [[intensity for _ in range(width)] for _ in range(height)]
     return matrix_addition(matrix, brightness_matrix)
 
 def flip_image(matrix):
-    """Flip image horizontally by transposing the matrix."""
     return matrix_transpose(matrix)
 
 def negative_image(matrix):
-    """Create negative by subtracting each pixel value from 255."""
     height = len(matrix)
     width = len(matrix[0])
     max_matrix = [[255 for _ in range(width)] for _ in range(height)]
     return matrix_subtraction(max_matrix, matrix)
 
 def rotate_image(matrix):
-    """Rotate image by 90 degrees clockwise."""
     # First transpose the matrix
     transposed = matrix_transpose(matrix)
     # Then reverse each row for 90-degree clockwise rotation
     return [row[::-1] for row in transposed]
 
 def skew_image(matrix, skew_factor_x=0.5, skew_factor_y=0.0):
-    """Apply skew transformation to an image using a skew matrix."""
     height = len(matrix)
     width = len(matrix[0])
     
@@ -121,25 +109,22 @@ def skew_image(matrix, skew_factor_x=0.5, skew_factor_y=0.0):
     # Initialize result matrix with zeros
     result = [[0 for _ in range(new_width)] for _ in range(new_height)]
     
-    # Reference point (origin for skew transformation)
-    ref_x = 0
-    ref_y = 0
     
     # Apply skew transformation to each pixel
     for i in range(height):
         for j in range(width):
             # Create coordinate matrix relative to reference point
             coord_matrix = [
-                [j - ref_x],
-                [i - ref_y]
+                [j],
+                [i]
             ]
             
             # Apply skew using matrix multiplication
             skewed_coord = matrix_multiplication(skew_matrix, coord_matrix)
             
             # Add reference point offset back
-            new_j = int(skewed_coord[0][0]) + ref_x
-            new_i = int(skewed_coord[1][0]) + ref_y
+            new_j = int(skewed_coord[0][0])
+            new_i = int(skewed_coord[1][0])
             
             # Check if new position is within bounds
             if 0 <= new_i < new_height and 0 <= new_j < new_width:
@@ -148,15 +133,9 @@ def skew_image(matrix, skew_factor_x=0.5, skew_factor_y=0.0):
     return result
 
 def scale_image(matrix, scale_x=1.5, scale_y=1.5):
-    """Scale image using a scaling matrix transformation."""
     height = len(matrix)
     width = len(matrix[0])
     
-    # Create scaling matrix
-    scaling_matrix = [
-        [scale_x, 0],
-        [0, scale_y]
-    ]
     
     # Calculate new dimensions
     new_width = int(width * scale_x)
@@ -252,7 +231,7 @@ def main():
         case "4":
             rotations = get_rotation_input()
             transformed_matrix = input_matrix
-            for _ in range(rotations % 4):  # % 4 because 4 rotations = original image
+            for _ in range(rotations % 4): 
                 transformed_matrix = rotate_image(transformed_matrix)
             output_name = f"rotated_{rotations * 90}.jpg"
         
