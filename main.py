@@ -1,5 +1,4 @@
 from PIL import Image
-import math
 
 def matrix_addition(matrix1, matrix2):
     result = []
